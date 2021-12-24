@@ -12,7 +12,7 @@ namespace OOP6
 {
     public partial class Form1 : Form
     {
-        Mylist lists;
+        Mylist list;
         bool isCTRL;
         Bitmap bitmap;
         Graphics gr ;
@@ -23,68 +23,109 @@ namespace OOP6
             bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gr = Graphics.FromImage(bitmap);
             
-            lists = new Mylist();
+            list = new Mylist();
             isCTRL = false;
             pictureBox1.Image = GetBitmap();
         }
 
+        //отрисовка объектов
+        public void PaintDraw()                 
+        {
+            //если в хранилище нет объектов - нечего отрисовывать, возвращаемся
+            if (list.getSize() == 0)
+                return;
+            //иначе отрисовываем всё
+            for (int i = 0; i < list.getSize(); i++)
+            {
+                list.getObj(i).print(gr);
+            }
+        }
+
+        //возвращает форму для отрсиосвки
+        public Bitmap GetBitmap()
+        {
+            return bitmap;
+        }
+
+        //обновление формы
+        private void PaintAll()
+        {
+            clearSheet();                       //очищает форму
+            PaintDraw();                        //отрисовать все объекты снова
+            pictureBox1.Image = GetBitmap();    //снова загрузить картинку
+        }
+
+        public void clearSheet()                //очистка картинки
+        {
+            gr.Clear(Color.White);
+        }
+
+        //создание объекта CCircle
         public void createCCircle(int x, int y)
         {
-            clearSheet();
-            CCircle circle = new CCircle(x,y,lists, pictureBox1.Width, pictureBox1.Height);
+            clearSheet();       //очищаем форму
+            //создаем объект
+            CCircle circle = new CCircle(x,y,list, pictureBox1.Width, pictureBox1.Height);
+            //
             PaintDraw();
             pictureBox1.Image = GetBitmap();
         }
+
+        //создание объекта Rectangle
         public void createRectangle(int x,int y)
         {
             clearSheet();
-            Rectangle rectangle = new Rectangle(x, y, lists, pictureBox1.Width, pictureBox1.Height);
+            Rectangle rectangle = new Rectangle(x, y, list, pictureBox1.Width, pictureBox1.Height);
             PaintDraw();
             pictureBox1.Image = GetBitmap();
         }
+
+        //создание объекта Square
         public void createSquare(int x, int y)
         {
             clearSheet();
-            Square square = new Square(x, y, lists, pictureBox1.Width, pictureBox1.Height);
+            Square square = new Square(x, y, list, pictureBox1.Width, pictureBox1.Height);
             PaintDraw();
             pictureBox1.Image = GetBitmap();
         }
+
+        //создание объекта Triangle
         public void createTriangle(int x,int y)
         {
             clearSheet();
-            Triangle square = new Triangle(x, y, lists, pictureBox1.Width, pictureBox1.Height);
+            Triangle triangle = new Triangle(x, y, list, pictureBox1.Width, pictureBox1.Height);
             PaintDraw();
             pictureBox1.Image = GetBitmap();
         }
-        public void createObj(object sender, MouseEventArgs e)
+
+        //при клике смотрим, мы выделяем объект или создаем объект
+        public void click(object sender, MouseEventArgs e)
         {
-            bool isObjClckd = false;          //если попали на объект
-            int i = 0;
-            char code;
-            //размер хранилища
-            int size = lists.getSize();
-            for(i = 0; i < size && (!isObjClckd); i++)
+            bool clickedOnObject = false;          //если попали на объект
+            int i;
+            int size = list.getSize();
+            for(i = 0; i < size && (!clickedOnObject); i++)
             {
-                code = lists.getObj(i).getCode();
-                switch (code)
+                //смотрим на объект из списка и в clickedOnObject заносим, выделен ли какой-то или нет
+                switch (list.getObj(i).getCode())
                 {
                     case 'C':
-                        isObjClckd = ((CCircle)lists.getObj(i)).isClicked(e.X, e.Y,isCTRL,lists);    
+                        clickedOnObject = ((CCircle)list.getObj(i)).isClicked(e.X, e.Y,isCTRL,list);    
                         break;
                     case 'R':
-                        isObjClckd = ((Rectangle)lists.getObj(i)).isClicked(e.X, e.Y,isCTRL, lists);
+                        clickedOnObject = ((Rectangle)list.getObj(i)).isClicked(e.X, e.Y,isCTRL, list);
                         break;
                     case 'S':
-                        isObjClckd = ((Square)lists.getObj(i)).isClicked(e.X, e.Y, isCTRL, lists);
+                        clickedOnObject = ((Square)list.getObj(i)).isClicked(e.X, e.Y, isCTRL, list);
                         break;
                     case 'T':
-                        isObjClckd = ((Triangle)lists.getObj(i)).isClicked(e.X, e.Y, isCTRL, lists);
+                        clickedOnObject = ((Triangle)list.getObj(i)).isClicked(e.X, e.Y, isCTRL, list);
                         break;
                 }
             }
 
-            //если объект не кликнутый, то создаем его
-            if (!isObjClckd) {
+            //если мы не кликнули на объект, то создаем объект класса, выбранного в listBox1
+            if (!clickedOnObject) {
                 switch (listBox1.SelectedItem.ToString())
                 {
                     case "Circle":
@@ -103,39 +144,11 @@ namespace OOP6
                         break;
                 }
             }
+            //если кликнули на объект, обновляем прорисовку и объект будет выделен
             else
             {
                 PaintAll();
             }
-        }
-
-        private void PaintAll()
-        {
-            clearSheet();                       //очищает картинку
-            PaintDraw();                        //отрисовать все объекты снова
-            pictureBox1.Image = GetBitmap();    //снова загрузить картинку
-            
-        }
-
-        public void clearSheet()                //очистка картинки
-        {
-            gr.Clear(Color.White);
-        }
-
-        public void PaintDraw()                 //отрисовка всех объектов
-        {
-            if (lists.getSize() == 0)
-                return;
-            for (int i = 0; i < lists.getSize(); i++)
-            {
-                lists.getObj(i).print(gr);
-            }
-            
-        }
-
-        public Bitmap GetBitmap()
-        {
-            return bitmap;
         }
 
         private void btnChangeColor(object sender, EventArgs e)
@@ -143,98 +156,108 @@ namespace OOP6
             isCTRL = false;
             //просматриваем выбранные объекты
             //если объект выбран, то методом setBrush меняем цвет заливки
-            for (int i = 0; i < lists.getSize(); i++)
+            for (int i = 0; i < list.getSize(); i++)
             {
-                if (lists.getObj(i).getSelect())
+                if (list.getObj(i).getSelect())
                 {
-                    lists.getObj(i).setBrush(listColor.SelectedItem.ToString());
+                    list.getObj(i).setBrush(listColor.SelectedItem.ToString());
                 }
             }
             //рефрешим отрисовку
             PaintAll();
         }
 
+        //обработка нажатия на форму
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             int value = 1;
-            if (e.Shift)
+            
+            if (e.Shift)                    //если прожали Shift
             {
                 value = 10;
             }
-            if (e.Control)
+            if (e.Control)                  //если прожали Ctrl
             {
                 isCTRL = true;
             }
             else
             {
-                switch (e.KeyCode)
+                switch (e.KeyCode)          //смотрим какие кнопки прожаты
                 {
-                    case Keys.Delete:
-                        for (int j = lists.getSize() - 1; j >= 0; j--)
+                    case Keys.Delete:       //если прожат Delete
+                        //удаляем все выделенные объекты из хранилища
+                        for (int j = list.getSize() - 1; j >= 0; j--)
                         {
-                            lists.getObj(j).deleteSelected(lists);
+                            //удаляем все выделенные объекты
+                            list.getObj(j).deleteSelected(list);
                         }
-                        lists.getObj(0).setSelect(true);
+                        //задаем первому элементу свойство выбранности Selected = true
+                        list.getObj(0).setSelect(true);
                         break;
                     case Keys.Left:
-
-                        for (int i = 0; i < lists.getSize(); i++)
+                        //если нажали стрелку влево - двигаемся влево
+                        for (int i = 0; i < list.getSize(); i++)
                         {
-                            if (lists.getObj(i).getSelect())
+                            if (list.getObj(i).getSelect())
                             {
-                                lists.getObj(i).move(-value, 0, i, pictureBox1.Width, pictureBox1.Height);
+                                list.getObj(i).move(-value, 0, i, pictureBox1.Width, pictureBox1.Height);
                             }
                         }
                         break;
                     case Keys.Right:
-                        for (int i = 0; i < lists.getSize(); i++)
+                        //если нажали стрелку вправо - двигаемся вправо
+                        for (int i = 0; i < list.getSize(); i++)
                         {
-                            if (lists.getObj(i).getSelect())
+                            if (list.getObj(i).getSelect())
                             {
-                                lists.getObj(i).move(value, 0, i, pictureBox1.Width, pictureBox1.Height);
+                                list.getObj(i).move(value, 0, i, pictureBox1.Width, pictureBox1.Height);
                             }
                         }
                         break;
                     case Keys.Up:
-                        for (int i = 0; i < lists.getSize(); i++)
+                        //если нажали стрелку вверх - двигаемся вверх
+                        for (int i = 0; i < list.getSize(); i++)
                         {
-                            if (lists.getObj(i).getSelect())
+                            if (list.getObj(i).getSelect())
                             {
-                                lists.getObj(i).move(0, -value, i, pictureBox1.Width, pictureBox1.Height);
+                                list.getObj(i).move(0, -value, i, pictureBox1.Width, pictureBox1.Height);
                             }
                         }
                         break;
                     case Keys.Down:
-                        for (int i = 0; i < lists.getSize(); i++)
+                        //если нажали стрелку вниз - двигаемся вниз
+                        for (int i = 0; i < list.getSize(); i++)
                         {
-                            if (lists.getObj(i).getSelect())
+                            if (list.getObj(i).getSelect())
                             {
-                                lists.getObj(i).move(0, value, i, pictureBox1.Width, pictureBox1.Height/*, lists*/);
+                                list.getObj(i).move(0, value, i, pictureBox1.Width, pictureBox1.Height/*, lists*/);
                             }
                         }
                         break;
                     case Keys.OemMinus:
-                        for (int i = 0; i < lists.getSize(); i++)
+                        //если нажали минус - уменьшаем размер объекта
+                        for (int i = 0; i < list.getSize(); i++)
                         {
-                            if (lists.getObj(i).getSelect())
+                            if (list.getObj(i).getSelect())
                             {
-                                lists.getObj(i).changeSize(-value, i, pictureBox1.Width, pictureBox1.Height/*, lists*/);
+                                list.getObj(i).changeSize(-value, i, pictureBox1.Width, pictureBox1.Height/*, lists*/);
                             }
                         }
                         break;
                     case Keys.Oemplus:
-                        for (int i = 0; i < lists.getSize(); i++)
+                        //если нажали плюс - увеличиваем размер объекта
+                        for (int i = 0; i < list.getSize(); i++)
                         {
-                            if (lists.getObj(i).getSelect())
+                            if (list.getObj(i).getSelect())
                             {
-                                lists.getObj(i).changeSize(+value, i, pictureBox1.Width, pictureBox1.Height/*, lists*/);
+                                list.getObj(i).changeSize(+value, i, pictureBox1.Width, pictureBox1.Height/*, lists*/);
                             }
                         }
                         break;
                     
                 }
-                PaintAll();
-                isCTRL = false;
+                PaintAll();         //отрисовываем форму
+                isCTRL = false;     //выключаем ctrl
             }
             
         }

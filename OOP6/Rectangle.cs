@@ -53,16 +53,17 @@ namespace OOP6
             }
             return false;
         }
-
         public void drawRectangle(Graphics gr)
         {
             gr.FillRectangle(br, x - a / 2, y - b / 2, a, b);
             gr.DrawRectangle(blackpen, x - a / 2, y - b / 2, a, b);
         }
+
         public void drawSelectedRectangle(Graphics gr)
         {
             gr.DrawRectangle(redpen, x - a / 2, y - b / 2, a, b);
         }
+
         public override void print(Graphics gr)
         {
             drawRectangle(gr);
@@ -80,6 +81,7 @@ namespace OOP6
                 y += y_;
             }
         }
+
         public override void changeSize(int size, int i_, int width, int height)
         {
             if ((x + a / 2 + (size*(a/b))+4 < width) && (y + b / 2 + size+4 < height) && (x - a/2 - (size * (a / b))-4 > 0) && (y - b/2 - size-4 > 0))

@@ -4,12 +4,14 @@ using System.Drawing;
 
 namespace OOP6
 {
+    //базовый класс
     public class Base
     {
         protected Pen blackpen;
         protected Pen redpen;
         public int x, y;
 
+        //инициализация компонентов объекта
         public virtual void initComps()
         {
             blackpen = new Pen(Color.Black);
@@ -18,17 +20,22 @@ namespace OOP6
             redpen.Width = 1;
         }
 
-
-        protected bool Selected=false;
+        //свойство выделения мышкой
+        protected bool Selected = false;
         protected Brush br = Brushes.White;
 		public virtual char getCode()
         {
+            //возврат кода
             return 'B';
         }
+
+        //имеет реализацию далее
         public virtual bool isClicked(int x, int y, bool isCtrl, Mylist mylist) 
         {
             return true;
         }
+
+        //установка цвета кисти
         public virtual void setBrush(string color)///Blue/Brown/Yellow/Green/Purple/Red/White
         {
             switch (color)
@@ -59,35 +66,39 @@ namespace OOP6
                     break;
             }
         }
-        public virtual Brush getBrush()
-        {
-            return br;
-        }
 
+        //задает объекту свойство выделенности
         public virtual void setSelect(bool value)
         {
             Selected = value;
         }
+
+        //возвращает показатель выделения объекта
+        //Selected - bool
         public virtual bool getSelect()
         {
             return Selected;
         }
 
+        //метод отрисовки без реализации
         public virtual void print(Graphics gr)
         {
 
         }
 
+        //метод перемещения без реализации
         public virtual void move(int x_, int y_, int i_, int width, int height)
         {
 
         }
 
+        //метод изменения размера
         public virtual void changeSize(int size,int i_, int width, int height)
         {
 
         }
-
+        
+        //сброс метод выделенности у всех объектов хранилища
         public virtual void refreshSelected(Mylist mylist)
         {
             for (int j = 0; j < mylist.getSize(); j++)
@@ -96,6 +107,8 @@ namespace OOP6
             }
         }
 
+        //если не прожат CTRL, сбросить все выделенные объекты
+        //и сделать текущий объект выделенным
         public virtual void toSelect(bool isCTRL, Mylist mylist)
         {
             if (!isCTRL)
@@ -104,11 +117,15 @@ namespace OOP6
             }
             setSelect(true);
         }
+
+        //удаление выделенного объекта из хранилища
         public virtual void deleteSelected(Mylist list)
         {
             if (Selected) list.deleteObj(this);
         }
     }
+
+    //класс отвечает за создание объектов, которые хранятся в переменной базового класса
     class MyBaseFactory
 	{
         public MyBaseFactory() { }
@@ -136,9 +153,9 @@ namespace OOP6
 		} 
 	}
 
+    //хранилище
     public class Mylist
     {
-
         public class Node
         {
             public Base base_=null;
@@ -185,7 +202,6 @@ namespace OOP6
         public void add(Base _base)
         {
             Node another = new Node(_base);
-            //("\tЭлемент добавлен в хранилище\n");
 
             if (isEmpty())
             {

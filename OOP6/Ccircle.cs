@@ -6,22 +6,27 @@ namespace OOP6
 
     public class CCircle : Base
     {
+        //радиус круга
         private int R;
 
+        //возвращение кода класса
         public override char getCode()
         {
             return 'C';
         }
+
+        //инициализация компонентов объекта
         public override void initComps()
         {
             base.initComps();
             R = 20;
         }
+
         public CCircle(int x, int y, Mylist mylist, int width, int height)
         {
 
             initComps();
-            //Проверяем не уйдёт ли часть объекта за рамки если есть место для объекта создаём
+            //проверяем - не уйдёт ли часть объекта за рамки - если есть место для объекта, создаём его
             if (((x + R < width) && (y + R < height) && (x - R > 0) && (y - R > 0)))
             {
                 this.x = x;
@@ -31,6 +36,7 @@ namespace OOP6
                 mylist.add(this);
             }
         }
+
         public CCircle(CCircle copy)
         {
             initComps();
@@ -39,9 +45,12 @@ namespace OOP6
             Selected = copy.Selected;
         }
         
+        //проверка на то, кликнут ли объект
         public override bool isClicked(int x,int y, bool isCtrl, Mylist mylist)
         {
+            //проверка, куда кликнули
             double tmp = Math.Pow(this.x-x, 2) + Math.Pow(this.y - y, 2);
+            //если попали по объекту - выделяем
             if (tmp < (R * R))
             {
                 toSelect(isCtrl, mylist);
@@ -50,19 +59,21 @@ namespace OOP6
             return false;
         }
         
-        
-        public void drawCircle(Graphics gr)//Вывод просто вершины(круга)
+        //отрисовка объекта
+        public void drawCircle(Graphics gr)
         {
             gr.FillEllipse(br, (x - R), (y - R), 2 * R, 2 * R);
             gr.DrawEllipse(blackpen, (x - R), (y - R), 2 * R, 2 * R);
         }
         
-        public void drawSelectedVert(Graphics gr)//Внутренний вывод выбранной
+        //отрисовка выделения
+        public void drawSelectedVert(Graphics gr)
         {
             gr.DrawEllipse(redpen, (x - R), (y - R), 2 * R, 2 * R);
         }
 
-        public override void print(Graphics gr)//Вывод круга
+        //метод вывода круга на форму
+        public override void print(Graphics gr)
         {
             drawCircle(gr);
             if (Selected)
@@ -71,9 +82,10 @@ namespace OOP6
             }
         }
 
+        //изменение положения объекта при движении
         public override void move(int x_, int y_,int i_,int width, int height)
         {
-            //Проверяем не выйдем ли мы за границу Бокса
+            //если мы выходим за форму, то не двигаем
             if ((x + x_+R<width)&&(y+y_+R<height)&& (x + x_-R >0)&&(y + y_ - R >0))
             {
                 x += x_;
@@ -81,6 +93,7 @@ namespace OOP6
             }
         }
 
+        //изменение размера
         public override void changeSize(int size, int i_, int width, int height)
         {
             if ((x + R+size < width) && (y + size + R < height) && (x - size - R > 0) && (y -size - R > 0))
