@@ -34,7 +34,7 @@ namespace OOP6
             initPoint();
         }
 
-        public Triangle(int x, int y, Mylist mylist, int width, int height)
+        public Triangle(int x, int y, MyList mylist, int width, int height)
         {
             initComps();
             if ((x - a / 2 - 4 > 0) && (x + a / 2 + 4 < width) && (y - (float)2 / 3 * 0.866 * a - 4 > 0) && (y + (float)1 / 3 * 0.866 * a + 4 < height))//если есть место для объекта создаём
@@ -56,7 +56,7 @@ namespace OOP6
             initPoint();
             Selected = copy.Selected;
         }
-        public override bool isClicked(int x, int y, bool isCtrl, Mylist mylist)
+        public override bool isClicked(int x, int y, bool isCtrl, MyList mylist)
         {
             initPoint();
             if ((points[2].Y < y && points[0].Y > y) && (x - points[2].X > (points[2].Y - (float)y) / 1.732) && (x - points[2].X < -(points[2].Y - (float)y) / 1.732))

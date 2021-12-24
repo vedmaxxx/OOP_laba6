@@ -31,7 +31,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnBrush = new System.Windows.Forms.Button();
             this.listColor = new System.Windows.Forms.ListBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listFigures = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,26 +75,26 @@
             this.listColor.TabIndex = 2;
             this.listColor.SelectedIndexChanged += new System.EventHandler(this.listColor_SelectedIndexChanged);
             // 
-            // listBox1
+            // listFigures
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
+            this.listFigures.FormattingEnabled = true;
+            this.listFigures.Items.AddRange(new object[] {
             "Circle",
             "Rectangle",
             "Square",
             "Triangle"});
-            this.listBox1.Location = new System.Drawing.Point(574, 392);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(85, 95);
-            this.listBox1.TabIndex = 3;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listFigures.Location = new System.Drawing.Point(574, 392);
+            this.listFigures.Name = "listFigures";
+            this.listFigures.Size = new System.Drawing.Size(85, 95);
+            this.listFigures.TabIndex = 3;
+            this.listFigures.SelectedIndexChanged += new System.EventHandler(this.listFigures_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1093, 690);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.listFigures);
             this.Controls.Add(this.listColor);
             this.Controls.Add(this.btnBrush);
             this.Controls.Add(this.pictureBox1);
@@ -112,7 +112,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnBrush;
         private System.Windows.Forms.ListBox listColor;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listFigures;
     }
 }
 

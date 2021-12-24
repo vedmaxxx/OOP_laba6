@@ -12,7 +12,7 @@ namespace OOP6
 {
     public partial class Form1 : Form
     {
-        Mylist list;
+        MyList list;
         bool isCTRL;
         Bitmap bitmap;
         Graphics gr ;
@@ -23,13 +23,13 @@ namespace OOP6
             bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gr = Graphics.FromImage(bitmap);
             
-            list = new Mylist();
+            list = new MyList();
             isCTRL = false;
-            pictureBox1.Image = GetBitmap();
+            pictureBox1.Image = getBitmap();
         }
 
         //отрисовка объектов
-        public void PaintDraw()                 
+        public void printStorage()                 
         {
             //если в хранилище нет объектов - нечего отрисовывать, возвращаемся
             if (list.getSize() == 0)
@@ -42,17 +42,17 @@ namespace OOP6
         }
 
         //возвращает форму для отрсиосвки
-        public Bitmap GetBitmap()
+        public Bitmap getBitmap()
         {
             return bitmap;
         }
 
-        //обновление формы
-        private void PaintAll()
+        //обновление формы - отрисовка ВСЕХ объектов заново
+        private void refreshSheet()
         {
             clearSheet();                       //очищает форму
-            PaintDraw();                        //отрисовать все объекты снова
-            pictureBox1.Image = GetBitmap();    //снова загрузить картинку
+            printStorage();                        //отрисовать все объекты снова
+            pictureBox1.Image = getBitmap();    //снова загрузить картинку
         }
 
         public void clearSheet()                //очистка картинки
@@ -65,10 +65,10 @@ namespace OOP6
         {
             clearSheet();       //очищаем форму
             //создаем объект
-            CCircle circle = new CCircle(x,y,list, pictureBox1.Width, pictureBox1.Height);
+            Circle circle = new Circle(x,y,list, pictureBox1.Width, pictureBox1.Height);
             //
-            PaintDraw();
-            pictureBox1.Image = GetBitmap();
+            printStorage();
+            pictureBox1.Image = getBitmap();
         }
 
         //создание объекта Rectangle
@@ -76,8 +76,8 @@ namespace OOP6
         {
             clearSheet();
             Rectangle rectangle = new Rectangle(x, y, list, pictureBox1.Width, pictureBox1.Height);
-            PaintDraw();
-            pictureBox1.Image = GetBitmap();
+            printStorage();
+            pictureBox1.Image = getBitmap();
         }
 
         //создание объекта Square
@@ -85,8 +85,8 @@ namespace OOP6
         {
             clearSheet();
             Square square = new Square(x, y, list, pictureBox1.Width, pictureBox1.Height);
-            PaintDraw();
-            pictureBox1.Image = GetBitmap();
+            printStorage();
+            pictureBox1.Image = getBitmap();
         }
 
         //создание объекта Triangle
@@ -94,8 +94,8 @@ namespace OOP6
         {
             clearSheet();
             Triangle triangle = new Triangle(x, y, list, pictureBox1.Width, pictureBox1.Height);
-            PaintDraw();
-            pictureBox1.Image = GetBitmap();
+            printStorage();
+            pictureBox1.Image = getBitmap();
         }
 
         //при клике смотрим, мы выделяем объект или создаем объект
@@ -110,7 +110,7 @@ namespace OOP6
                 switch (list.getObj(i).getCode())
                 {
                     case 'C':
-                        clickedOnObject = ((CCircle)list.getObj(i)).isClicked(e.X, e.Y,isCTRL,list);    
+                        clickedOnObject = ((Circle)list.getObj(i)).isClicked(e.X, e.Y,isCTRL,list);    
                         break;
                     case 'R':
                         clickedOnObject = ((Rectangle)list.getObj(i)).isClicked(e.X, e.Y,isCTRL, list);
@@ -125,8 +125,9 @@ namespace OOP6
             }
 
             //если мы не кликнули на объект, то создаем объект класса, выбранного в listBox1
-            if (!clickedOnObject) {
-                switch (listBox1.SelectedItem.ToString())
+            if (!clickedOnObject)
+            {
+                switch (listFigures.SelectedItem.ToString())
                 {
                     case "Circle":
                         createCCircle(e.X, e.Y);
@@ -145,10 +146,7 @@ namespace OOP6
                 }
             }
             //если кликнули на объект, обновляем прорисовку и объект будет выделен
-            else
-            {
-                PaintAll();
-            }
+            else refreshSheet();
         }
 
         private void btnChangeColor(object sender, EventArgs e)
@@ -164,7 +162,7 @@ namespace OOP6
                 }
             }
             //рефрешим отрисовку
-            PaintAll();
+            refreshSheet();
         }
 
         //обработка нажатия на форму
@@ -172,7 +170,7 @@ namespace OOP6
         {
             int value = 1;
             
-            if (e.Shift)                    //если прожали Shift
+            if (e.Shift)                    //если прожали Shift(откат ctrl-a)
             {
                 value = 10;
             }
@@ -256,20 +254,21 @@ namespace OOP6
                         break;
                     
                 }
-                PaintAll();         //отрисовываем форму
+                refreshSheet();         //отрисовываем форму
                 isCTRL = false;     //выключаем ctrl
             }
             
         }
 
-        //нижние две - неактивность кнопок/методов до выбора объекта
         private void listColor_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //при выборе цвета в списке цветов делает кнопку brush доступной
             btnBrush.Enabled = true;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void listFigures_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //при выборе фигуры разблокирует форму для рисования
             pictureBox1.Enabled = true;
         }
     }

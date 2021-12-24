@@ -4,7 +4,7 @@ using System.Drawing;
 namespace OOP6
 {
 
-    public class CCircle : Base
+    public class Circle : Base
     {
         //радиус круга
         private int R;
@@ -22,7 +22,7 @@ namespace OOP6
             R = 20;
         }
 
-        public CCircle(int x, int y, Mylist mylist, int width, int height)
+        public Circle(int x, int y, MyList mylist, int width, int height)
         {
 
             initComps();
@@ -37,7 +37,7 @@ namespace OOP6
             }
         }
 
-        public CCircle(CCircle copy)
+        public Circle(Circle copy)
         {
             initComps();
             x = copy.x;
@@ -46,7 +46,7 @@ namespace OOP6
         }
         
         //проверка на то, кликнут ли объект
-        public override bool isClicked(int x,int y, bool isCtrl, Mylist mylist)
+        public override bool isClicked(int x,int y, bool isCtrl, MyList mylist)
         {
             //проверка, куда кликнули
             double tmp = Math.Pow(this.x-x, 2) + Math.Pow(this.y - y, 2);

@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ccircle.cs" />
+    <Compile Include="Circle.cs" />
     <Compile Include="MyList.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

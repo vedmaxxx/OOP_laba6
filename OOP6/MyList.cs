@@ -9,6 +9,10 @@ namespace OOP6
     {
         protected Pen blackpen;
         protected Pen redpen;
+        protected Brush br = Brushes.White;
+
+        //состояние выделенности объекта
+        protected bool Selected = false;    
         public int x, y;
 
         //инициализация компонентов объекта
@@ -20,9 +24,6 @@ namespace OOP6
             redpen.Width = 1;
         }
 
-        //свойство выделения мышкой
-        protected bool Selected = false;
-        protected Brush br = Brushes.White;
 		public virtual char getCode()
         {
             //возврат кода
@@ -30,7 +31,7 @@ namespace OOP6
         }
 
         //имеет реализацию далее
-        public virtual bool isClicked(int x, int y, bool isCtrl, Mylist mylist) 
+        public virtual bool isClicked(int x, int y, bool isCtrl, MyList mylist) 
         {
             return true;
         }
@@ -99,7 +100,7 @@ namespace OOP6
         }
         
         //сброс метод выделенности у всех объектов хранилища
-        public virtual void refreshSelected(Mylist mylist)
+        public virtual void refreshSelected(MyList mylist)
         {
             for (int j = 0; j < mylist.getSize(); j++)
             {
@@ -109,7 +110,7 @@ namespace OOP6
 
         //если не прожат CTRL, сбросить все выделенные объекты
         //и сделать текущий объект выделенным
-        public virtual void toSelect(bool isCTRL, Mylist mylist)
+        public virtual void toSelect(bool isCTRL, MyList mylist)
         {
             if (!isCTRL)
             {
@@ -119,7 +120,7 @@ namespace OOP6
         }
 
         //удаление выделенного объекта из хранилища
-        public virtual void deleteSelected(Mylist list)
+        public virtual void deleteSelected(MyList list)
         {
             if (Selected) list.deleteObj(this);
         }
@@ -135,7 +136,7 @@ namespace OOP6
 			switch (p.getCode())
 			{
                 case 'C':
-					_base = new CCircle((CCircle)p);
+					_base = new Circle((Circle)p);
 					break;
                 case 'R':
                     _base = new Rectangle((Rectangle)p);
@@ -154,7 +155,7 @@ namespace OOP6
 	}
 
     //хранилище
-    public class Mylist
+    public class MyList
     {
         public class Node
         {

@@ -20,7 +20,7 @@ namespace OOP6
             b = 25;
         }
 
-        public Rectangle(int x, int y, Mylist mylist, int width, int height)
+        public Rectangle(int x, int y, MyList mylist, int width, int height)
         {
             
             initComps();
@@ -44,7 +44,7 @@ namespace OOP6
             Selected = copy.Selected;
         }
 
-        public override bool isClicked(int x, int y,bool isCtrl,Mylist mylist)
+        public override bool isClicked(int x, int y,bool isCtrl,MyList mylist)
         {
             if ((x > (this.x - (a / 2))) && (x < (this.x + (a / 2))) && (y > (this.y - (b / 2))) && (y < (this.y + (b / 2))))
             {
